@@ -1,6 +1,5 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import s from './page.module.css'
 
-export default function Home() {
-  return <main>test</main>
+export default async function Home() {
+  return <>123</>
 }

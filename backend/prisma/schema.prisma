@@ -10,51 +10,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserType {
+  user
+  worker
+}
+
 model Users {
-  id       String     @id @default(uuid()) @db.Uuid
-  email    String     @unique
-  password String
-  Tickets  Tickets[]
-  Feedback Feedback[]
+  id           String         @id @default(uuid()) @db.Uuid
+  name         String
+  email        String         @unique
+  password     String
+  image        String?
+  type         UserType       @default(user)
+  workersField WorkersFields?
+  feedback     Feedback[]
 }
 
-model Films {
+model WorkersFields {
   id          String     @id @default(uuid()) @db.Uuid
-  title       String     @db.Text
+  job         String     @db.Text
   description String     @db.Text
-  image       String     @db.Text
-  genre       String     @db.Text
-  director    String     @db.Text
-  year        String     @db.Text
-  Sessions    Sessions[]
-  Feedback    Feedback[]
-}
-
-model Sessions {
-  id      String    @id @default(uuid()) @db.Uuid
-  cost    Int
-  time    DateTime  @db.Timestamp
-  cinema  String    @db.Text
-  film    Films     @relation(fields: [filmId], references: [id])
-  filmId  String    @db.Uuid
-  Tickets Tickets[]
-}
-
-model Tickets {
-  id        String   @id @default(uuid()) @db.Uuid
-  count     Int
-  user      Users    @relation(fields: [userId], references: [id])
-  userId    String   @db.Uuid
-  session   Sessions @relation(fields: [sessionId], references: [id])
-  sessionId String   @db.Uuid
+  experience  String     @db.Text
+  subway      String?    @db.Text
+  feedback    Feedback[]
+  user        Users      @relation(fields: [usersId], references: [id])
+  usersId     String     @unique @db.Uuid
 }
 
 model Feedback {
-  id     String @id @default(uuid()) @db.Uuid
-  score  Int
-  text   String @db.Text
-  user   Users  @relation(fields: [userId], references: [id])
-  userId String @db.Uuid
-  film   Films  @relation(fields: [filmId], references: [id])
-  filmId String @db.Uuid
+  id       String        @id @default(uuid()) @db.Uuid
+  score    Int
+  text     String        @db.Text
+  client   Users         @relation(fields: [clientId], references: [id])
+  clientId String        @db.Uuid
+  worker   WorkersFields @relation(fields: [workerId], references: [id])
+  workerId String        @db.Uuid
 }
