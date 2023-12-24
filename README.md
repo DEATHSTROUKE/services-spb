@@ -3,7 +3,7 @@
 1. Склонировать репозиторий
 
 ```sh
-git clone
+git clone git@github.com:DEATHSTROUKE/services-spb.git
 ```
 
 2. Убедиться, что есть файлы .env в папке frontend и backend, а также файл .env.postgres с данными внутри
