@@ -24,7 +24,7 @@ export const createFeedback = async ({
 }
 
 export const getWorkers = async () => {
-  return await prisma.users.findMany({
+  const workers = await prisma.users.findMany({
     where: { type: 'worker' },
     select: {
       id: true,
@@ -41,16 +41,30 @@ export const getWorkers = async () => {
       },
     },
   })
+  const prepairedWorkers = workers.map((item) => {
+    return {
+      id: item.id,
+      name: item.name,
+      email: item.email,
+      image: item.image,
+      description: item.workersField?.description,
+      experience: item.workersField?.experience,
+      job: item.workersField?.job,
+      subway: item.workersField?.subway,
+    }
+  })
+  return prepairedWorkers
 }
 
 export const getWorkerById = async (id: string) => {
-  return await prisma.users.findUnique({
+  const worker = await prisma.users.findUnique({
     where: { id },
     select: {
       id: true,
       name: true,
       email: true,
       image: true,
+      type: true,
       workersField: {
         select: {
           id: true,
@@ -75,4 +89,22 @@ export const getWorkerById = async (id: string) => {
       },
     },
   })
+
+  if (!worker) return null
+
+  const prepairedWorker = {
+    id: worker.id,
+    name: worker.name,
+    email: worker.email,
+    image: worker.image,
+    type: worker.type,
+    workerId: worker.workersField?.id,
+    description: worker.workersField?.description,
+    experience: worker.workersField?.experience,
+    job: worker.workersField?.job,
+    subway: worker.workersField?.subway,
+    feedback: worker.workersField?.feedback,
+  }
+
+  return prepairedWorker
 }

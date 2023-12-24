@@ -51,27 +51,6 @@ export const createUser = async (userData: UserToCreate) => {
   return user
 }
 
-export const getProfile = async (id: string) => {
-  return await prisma.users.findUnique({
-    where: { id },
-    select: {
-      id: true,
-      email: true,
-      image: true,
-      name: true,
-      type: true,
-      workersField: {
-        select: {
-          description: true,
-          experience: true,
-          job: true,
-          subway: true,
-        },
-      },
-    },
-  })
-}
-
 type ChangeProfileData = {
   id: string
   name: string
@@ -82,9 +61,24 @@ type ChangeProfileData = {
   job: string
   subway: string
 }
+
 export const changeProfile = async (userData: ChangeProfileData) => {
   const { id, name, email, image, description, experience, job, subway } =
     userData
+
+  const user = await prisma.users.findUnique({ where: { id } })
+
+  if (user?.type === 'user') {
+    return await prisma.users.update({
+      where: { id },
+      data: {
+        name,
+        email,
+        image,
+      },
+    })
+  }
+
   return await prisma.users.update({
     where: { id },
     data: {

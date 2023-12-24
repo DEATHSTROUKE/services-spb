@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --config nodemon.json",
-    "db:deploy": "yarn prisma migrate dev --name init"
+    "db:deploy": "yarn prisma migrate dev --name init",
+    "prod": "yarn prisma migrate deploy && yarn dev"
   },
   "dependencies": {
     "@fastify/cors": "^8.4.2",

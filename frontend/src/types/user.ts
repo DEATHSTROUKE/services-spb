@@ -8,4 +8,5 @@ export type User = {
   name: string
   email: string
   type: UserType.Client
+  image?: string
 }

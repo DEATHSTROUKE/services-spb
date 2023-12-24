@@ -33,4 +33,5 @@ next-env.d.ts
 *.sw?
 
 tmp
-.env
+# .env
+pgdata

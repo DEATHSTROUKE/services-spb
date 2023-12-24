@@ -1,18 +1,18 @@
-import type { Metadata } from 'next'
-import { Roboto } from 'next/font/google'
+'use client'
+
+import { Box } from '@mui/joy'
 import './globals.css'
 import Header from '@/components/Header/Header'
+import ThemeProvider from '@/components/ThemeProvider/ThemeProvider'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-const roboto = Roboto({
-  subsets: ['cyrillic'],
-  style: ['normal', 'italic'],
-  weight: ['400', '700'],
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
 })
-
-export const metadata: Metadata = {
-  title: 'Билетопоиск Главная',
-  description: 'Лучший сервис для покупки билетов',
-}
 
 export default function RootLayout({
   children,
@@ -21,11 +21,30 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body className={roboto.className}>
-        <div className="wrapper">
-          <Header />
-          <main className="main">{children}</main>
-        </div>
+      <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <title>Услуги СПБ</title>
+      </head>
+      <body>
+        <ThemeProvider>
+          <QueryClientProvider client={queryClient}>
+            <div className="wrapper">
+              <Header />
+              <main className="main">
+                <Box
+                  sx={{
+                    maxWidth: '1200px',
+                    margin: '0 auto',
+                    width: '100%',
+                    padding: '0 20px',
+                  }}
+                >
+                  {children}
+                </Box>
+              </main>
+            </div>
+          </QueryClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

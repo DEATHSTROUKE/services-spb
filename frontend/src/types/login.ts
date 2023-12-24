@@ -1,13 +1,18 @@
-import { User } from './user'
-import { Worker } from './worker'
+import { User, UserType } from './user'
 
 export type UserLogin = {
   email: string
   password: string
 }
 
-export type UserRegister = User & { password: string }
-
 export type UserReply = User & { token: string }
 
-export type WorkerRegister = Worker & { password: string }
+export type WorkerRegister = {
+  name: string
+  email: string
+  type: UserType
+  job: string
+  description: string
+  experience: string
+  password: string
+}
